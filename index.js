@@ -1,5 +1,5 @@
 import express from 'express';
-import fs from "fs"
+import cors from "cors"
 import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
 import { dirname } from 'path';
@@ -7,6 +7,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express()
+app.use(express.json())
+app.use(cors())
 // mongodb+srv://mohammadsaber:<db_password>@myfirstnodejscluster.ud0im4b.mongodb.net/?retryWrites=true&w=majority&appName=myfirstnodejscluster
 mongoose.connect("mongodb+srv://mohammadsaber:goldce159159@myfirstnodejscluster.ud0im4b.mongodb.net/?retryWrites=true&w=majority&appName=myfirstnodejscluster").then(() => {
     console.log("connection confirmed")
@@ -15,7 +17,6 @@ mongoose.connect("mongodb+srv://mohammadsaber:goldce159159@myfirstnodejscluster.
 })
 
 import Article from './models/article.js';
-app.use(express.json())
 app.get("/hello", (req, res) => {
     res.send("hello from hello")
 })
@@ -68,7 +69,7 @@ app.get("/sayhello", (req, res) => {
 app.post("/article", async (req, res) => {
     const articles = new Article()
     articles.title = req.body.title
-    articles.body = req.body.bodies
+    articles.body = req.body.body
     articles.likes = req.body.likes
     await articles.save()
     res.send("article has been saved")
